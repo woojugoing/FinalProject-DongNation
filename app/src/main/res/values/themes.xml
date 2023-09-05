@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Dongnation" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/green200</item>
+        <item name="colorSecondary">@color/green100</item>
+        <item name="android:statusBarColor" >@color/white</item>
+        <item name="android:windowLightStatusBar" >true</item>
+    </style>
+
+    <style name="Theme.Dongnation" parent="Base.Theme.Dongnation" />
+
+    <style name="AppTheme.Dongnation.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.Dongnation</item>
+    </style>
+
+</resources>
