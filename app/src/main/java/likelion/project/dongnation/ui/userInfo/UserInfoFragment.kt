@@ -22,9 +22,7 @@ class UserInfoFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         fragmentUserInfoBinding.run {
-            toolbarUserInfo.run {
-                title = "내 정보"
-            }
+            toolbarUserInfo.title = "내 정보"
         }
 
         return fragmentUserInfoBinding.root
