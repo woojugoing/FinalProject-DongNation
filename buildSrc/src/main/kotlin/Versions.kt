@@ -6,7 +6,7 @@ object Versions {
     const val MATERIAL_VERSION = "1.9.0"
     const val FIREBASE_BOM_VERSION = "32.2.2"
     const val FIREBASE_STORAGE_VERSION = "20.2.1"
-    const val FIREBASE_PLAY_VERSION = "20.6.0"
+    const val FIREBASE_PLAY_VERSION = "20.7.0"
     const val LOTTIE_VERSION = "5.2.0"
     const val SKELETON_VERSION = "0.5.0"
     const val JUNIT_VERSION = "4.13.2"
@@ -20,6 +20,9 @@ object Versions {
     const val NAVERMAP_VERSION = "3.17.0"
     const val LOCATION_VERSION = "21.0.1"
     const val ROOM_VERSION = "2.5.2"
+    const val LIFECYCLE_SCOPE_VERSION = "2.4.0"
+    const val RETROFIT_VERSION = "2.9.0"
+    const val Indicator_VERSION = "5.0"
 }
 
 object AndroidXDeps {
@@ -28,6 +31,7 @@ object AndroidXDeps {
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:${Versions.CONSTRAINT_LAYOUT_VERSION}"
     const val SPLASH_SCREEN = "androidx.core:core-splashscreen:${Versions.SPLASH_SCREEN_VERSION}"
     const val VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.VIEWMODEL_VERSION}"
+    const val LIFECYCLE_SCOPE = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE_SCOPE_VERSION}"
 }
 
 object GoogleDeps {
@@ -85,3 +89,11 @@ object Room {
     const val KAPT_COMPILE =  "androidx.room:room-compiler:${Versions.ROOM_VERSION}"
 }
 
+object RetrofitDeps {
+    const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT_VERSION}"
+    const val CONVERTER_GSON =  "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT_VERSION}"
+}
+
+object IndicatorDeps {
+    const val Indicator = "com.tbuonomo:dotsindicator:${Versions.Indicator_VERSION}"
+}

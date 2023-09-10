@@ -11,18 +11,24 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.transition.MaterialSharedAxis
+import com.qure.create.location.LocationSettingFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.ActivityMainBinding
+import likelion.project.dongnation.ui.board.BoardContentsFragment
 import likelion.project.dongnation.ui.donate.DonateInfoFragment
+import likelion.project.dongnation.ui.board.BoardMainFragment
+import likelion.project.dongnation.ui.board.BoardWriteFragment
 import likelion.project.dongnation.ui.home.HomeFragment
 import likelion.project.dongnation.ui.login.LoginFragment
 import likelion.project.dongnation.ui.map.MapFragment
 import likelion.project.dongnation.ui.onboarding.OnboardingFragment
 import likelion.project.dongnation.ui.permission.PermissionFragment
+import likelion.project.dongnation.ui.review.ReviewShowFragment
+import likelion.project.dongnation.ui.review.ReviewWriteFragment
 import likelion.project.dongnation.ui.userInfo.UserInfoFragment
 
 class MainActivity : AppCompatActivity() {
@@ -30,12 +36,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
 
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     val permissionListVersion33 = arrayOf(
+        Manifest.permission.READ_MEDIA_IMAGES,
         Manifest.permission.CAMERA,
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.READ_MEDIA_IMAGES,
     )
 
     val permissionList = arrayOf(
@@ -54,8 +59,9 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
 
         setContentView(activityMainBinding.root)
-        navigateToPermissionOrOnboardingOrLogin()
         observe()
+//        navigateToPermissionOrOnboardingOrLogin()
+        replaceFragment(LOCATION_SETTING_FRAGMENT, false, null)
     }
 
     fun replaceFragment(name:String, addToBackStack:Boolean, bundle:Bundle?){
@@ -78,6 +84,12 @@ class MainActivity : AppCompatActivity() {
             DONATE_INFO_FRAGMENT -> DonateInfoFragment()
             ONBOARDING_FRAGMENT -> OnboardingFragment()
             PERMISSION_FRAGMENT -> PermissionFragment()
+            BOARD_MAIN_FRAGMENT -> BoardMainFragment()
+            BOARD_WRITE_FRAGMENT -> BoardWriteFragment()
+            LOCATION_SETTING_FRAGMENT -> LocationSettingFragment()
+            REVIEW_SHOW_FRAGMENT -> ReviewShowFragment()
+            REVIEW_WRITE_FRAGMENT -> ReviewWriteFragment()
+            BOARD_CONTENTS_FRAGMENT -> BoardContentsFragment()
             else -> Fragment()
         }
 
@@ -155,5 +167,11 @@ class MainActivity : AppCompatActivity() {
         val DONATE_INFO_FRAGMENT = "DonateInfoFragment"
         val ONBOARDING_FRAGMENT = "OnboardingFragment"
         val PERMISSION_FRAGMENT = "PermissionFragment"
+        val BOARD_MAIN_FRAGMENT = "BoardMainFragment"
+        val BOARD_WRITE_FRAGMENT = "BoardWriteFragment"
+        val LOCATION_SETTING_FRAGMENT = "LocationSettingFragment"
+        val REVIEW_SHOW_FRAGMENT = "ReviewShowFragment"
+        val REVIEW_WRITE_FRAGMENT = "ReviewWriteFragment"
+        val BOARD_CONTENTS_FRAGMENT = "BoardContentsFragment"
     }
 }

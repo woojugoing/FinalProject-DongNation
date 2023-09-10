@@ -17,7 +17,9 @@ android {
     val naverOauthClientId = properties["NAVER_OAUTH_CLIENT_ID"] ?: ""
     val naverOauthClientSecret = properties["NAVER_OAUTH_CLIENT_SECRET"] ?: ""
     val naverOauthClientName = properties["NAVER_OAUTH_CLIENT_NAME"] ?: ""
-
+    val naverMapClientId = properties["NAVER_MAP_CLIENT_ID"] ?: ""
+    val naverMapClientSecret = properties["NAVER_MAP_CLIENT_SECRET"] ?: ""
+    val googleOauthWebClientId = properties["GOOGLE_OAUTH_WEB_CLIENT_ID"] ?: ""
 
     defaultConfig {
         applicationId = "likelion.project.dongnation"
@@ -32,6 +34,10 @@ android {
         buildConfigField("String", "NAVER_OAUTH_CLIENT_ID", "$naverOauthClientId")
         buildConfigField("String", "NAVER_OAUTH_CLIENT_SECRET", "$naverOauthClientSecret")
         buildConfigField("String", "NAVER_OAUTH_CLIENT_NAME", "$naverOauthClientName")
+        buildConfigField("String", "GOOGLE_OAUTH_WEB_CLIENT_ID", "$googleOauthWebClientId")
+        buildConfigField("String", "NAVER_OAUTH_CLIENT_ID", "$naverOauthClientId")
+        buildConfigField("String", "NAVER_MAP_CLIENT_ID", "$naverMapClientId")
+        buildConfigField("String", "NAVER_MAP_CLIENT_SECRET", "$naverMapClientSecret")
         manifestPlaceholders["kakaoNativeAppKey"] = kakaoNativeAppKey
     }
 
@@ -65,6 +71,7 @@ dependencies {
     implementation(AndroidXDeps.CONSTRAINT_LAYOUT)
     implementation(AndroidXDeps.VIEWMODEL)
     implementation(AndroidXDeps.SPLASH_SCREEN)
+    implementation(AndroidXDeps.LIFECYCLE_SCOPE)
 
     // Google
     implementation(GoogleDeps.MATERIAL)
@@ -112,4 +119,11 @@ dependencies {
 
     // Naver
     implementation(NaverDeps.NAVER)
+
+    // Retrofit2
+    implementation(RetrofitDeps.RETROFIT)
+    implementation(RetrofitDeps.CONVERTER_GSON)
+
+    // Indicator
+    implementation(IndicatorDeps.Indicator)
 }

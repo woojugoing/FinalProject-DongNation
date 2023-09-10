@@ -1,9 +1,11 @@
 package likelion.project.dongnation.ui.login
 
+import android.net.wifi.hotspot2.pps.Credential
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.auth.api.identity.SignInCredential
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -31,6 +33,9 @@ class LoginViewModel : ViewModel() {
             }
             LOGIN_NAVER -> {
                 loginNAVER(mainActivity)
+            }
+            LOGIN_GOOGLE -> {
+                loginGOOGLE()
             }
         }
     }
@@ -129,6 +134,11 @@ class LoginViewModel : ViewModel() {
         NaverIdLoginSDK.authenticate(mainActivity, oauthLoginCallback)
     }
 
+    private fun loginGOOGLE(){
+        // 원탭 로그인 UI 호출
+        loginState.value = LOGIN_GOOGLE_ONE_TAP_REQUEST
+    }
+
     private suspend fun saveWithDuplicateChecking(user: User): Int{
         val userList = userRepository.getUser(user)
         return if(userList.size != 0){
@@ -163,6 +173,19 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    fun signInCredentialToUserGOOGLE(credential: SignInCredential){
+        val userType = LoginViewModel.LOGIN_GOOGLE
+        val userId = credential.googleIdToken
+        val userDisplayName = credential.displayName
+        val userEmail = credential.id
+        if(userId != null && userDisplayName != null){
+            val user = User(userType, userId, userDisplayName, userEmail)
+            runBlocking {
+                loginState.value = saveWithDuplicateChecking(user)
+            }
+        }
+    }
+
     companion object {
         const val LOGIN_KAKAO = 1
         const val LOGIN_KAKAO_SUCCESS = 2
@@ -170,5 +193,9 @@ class LoginViewModel : ViewModel() {
         const val LOGIN_NAVER = 4
         const val LOGIN_NAVER_SUCCESS = 5
         const val LOGIN_NAVER_FAILURE = 6
+        const val LOGIN_GOOGLE = 7
+        const val LOGIN_GOOGLE_SUCCESS = 8
+        const val LOGIN_GOOGLE_FAILURE = 9
+        const val LOGIN_GOOGLE_ONE_TAP_REQUEST = 10
     }
 }
