@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gallery_selection">선택</string>
+    <string name="gallery_total_count">총 0장</string>
+    <string name="gallery_take_photo">사진 찍기</string>
+</resources>
