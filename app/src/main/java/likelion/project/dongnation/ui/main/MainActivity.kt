@@ -62,7 +62,8 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(activityMainBinding.root)
         observe()
-        navigateToPermissionOrOnboardingOrLogin()
+//        navigateToPermissionOrOnboardingOrLogin()
+        replaceFragment(GALLERY_FRAGMENT, false, null)
     }
 
     fun replaceFragment(name:String, addToBackStack:Boolean, bundle:Bundle?){
