@@ -16,7 +16,8 @@
         android:theme="@style/Theme.Dongnation.Toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextAppearance="@style/Typography.Bold24" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_chatting_list"
