@@ -15,7 +15,8 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/Theme.Dongnation.Toolbar"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextAppearance="@style/Typography.Medium24" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_chatting"
@@ -50,7 +51,8 @@
             android:background="@color/gray50"
             android:ems="10"
             android:gravity="start|top"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:textAppearance="@style/Typography.Regular18" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
