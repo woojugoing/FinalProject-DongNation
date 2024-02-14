@@ -1,14 +1,11 @@
 package likelion.project.dongnation.ui.chatting
 
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
@@ -19,9 +16,6 @@ import likelion.project.dongnation.R
 import likelion.project.dongnation.databinding.FragmentChattingBinding
 import likelion.project.dongnation.databinding.ItemChattingMessageCounterpartRowBinding
 import likelion.project.dongnation.databinding.ItemChattingMessageOneselfRowBinding
-import likelion.project.dongnation.databinding.ItemChattingMessageOneselfRowBinding.*
-import likelion.project.dongnation.model.ChattingRoom
-import likelion.project.dongnation.model.User
 import likelion.project.dongnation.ui.login.LoginViewModel
 import likelion.project.dongnation.ui.main.MainActivity
 import java.text.SimpleDateFormat
@@ -36,7 +30,6 @@ class ChattingFragment : Fragment() {
     private lateinit var chattingRoomUserIdCounterpart: String
     private lateinit var chattingRoomUserNameCounterpart: String
     private lateinit var chattingRoomUserProfileCounterpart: String
-    private lateinit var chattingRoom: ChattingRoom
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,12 +45,21 @@ class ChattingFragment : Fragment() {
             arguments?.getString("chattingRoomUserNameCounterpart", "").toString()
         chattingRoomUserProfileCounterpart =
             arguments?.getString("chattingRoomUserProfileCounterpart", "").toString()
-        chattingRoom = ChattingRoom()
 
+        initData()
         initUI()
         observe()
 
         return fragmentChattingBinding.root
+    }
+
+    private fun initData(){
+        chattingViewModel.run{
+            getChattingList(LoginViewModel.loginUserInfo.copy().userId, chattingRoomUserIdCounterpart)
+            getUser(chattingRoomUserIdCounterpart)
+            notifyNewMessage()
+            notifyUserChange()
+        }
     }
 
     private fun initUI(){
@@ -86,15 +88,11 @@ class ChattingFragment : Fragment() {
                     }
                     false
                 }
-                chattingViewModel.getUser(chattingRoomUserIdCounterpart)
             }
 
             recyclerViewChatting.run{
                 adapter = RecyclerAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
-                chattingViewModel.getChattingList(LoginViewModel.loginUserInfo.copy().userId, chattingRoomUserIdCounterpart)
-                chattingViewModel.notifyNewMessage()
-                chattingViewModel.notifyUserChange()
                 ChattingViewModel.receivingState.value = false
             }
 
@@ -106,7 +104,6 @@ class ChattingFragment : Fragment() {
 
     private fun observe(){
         chattingViewModel.chattingRoom.observe(viewLifecycleOwner){
-            chattingRoom = chattingViewModel.chattingRoom.value!!
             if(it.chattingRoomBlock){
                 fragmentChattingBinding.editTextChattingMessage.isEnabled = false
                 fragmentChattingBinding.editTextChattingMessage.setText("대화가 불가능한 상태입니다")
@@ -128,8 +125,11 @@ class ChattingFragment : Fragment() {
                 }
             }
         }
-        chattingViewModel.chattingRoomUserNameCounterpart.observe(viewLifecycleOwner){
-            fragmentChattingBinding.toolbarChatting.title = chattingViewModel.chattingRoomUserNameCounterpart.value
+        chattingViewModel.chattingRoomUserCounterpart.observe(viewLifecycleOwner){
+            fragmentChattingBinding.run {
+                toolbarChatting.title = chattingViewModel.chattingRoomUserCounterpart.value!!.userName
+                recyclerViewChatting.adapter?.notifyDataSetChanged()
+            }
         }
         ChattingViewModel.receivingState.observe(viewLifecycleOwner){
             if(it){
@@ -196,7 +196,7 @@ class ChattingFragment : Fragment() {
             }
 
         override fun getItemViewType(position: Int): Int {
-            return if(chattingRoom.chattingRoomMessages[position].messageUserId == LoginViewModel.loginUserInfo.userId){
+            return if(chattingViewModel.chattingRoom.value!!.chattingRoomMessages[position].messageUserId == LoginViewModel.loginUserInfo.userId){
                 MESSAGE_ONESELF
             } else{
                 MESSAGE_COUNTERPART
@@ -226,21 +226,21 @@ class ChattingFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return chattingRoom.chattingRoomMessages.size
+            return chattingViewModel.chattingRoom.value!!.chattingRoomMessages.size
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when(holder){
                 is ViewHolderOneself -> {
-                    holder.textViewMessage.text = chattingRoom.chattingRoomMessages[position].messageContent
-                    holder.textViewDate.text = chattingRoom.chattingRoomMessages[position].messageDate
+                    holder.textViewMessage.text = chattingViewModel.chattingRoom.value!!.chattingRoomMessages[position].messageContent
+                    holder.textViewDate.text = chattingViewModel.chattingRoom.value!!.chattingRoomMessages[position].messageDate
                 }
                 is ViewHolderCounterpart -> {
-                    holder.textViewMessage.text = chattingRoom.chattingRoomMessages[position].messageContent
-                    holder.textViewDate.text = chattingRoom.chattingRoomMessages[position].messageDate
+                    holder.textViewMessage.text = chattingViewModel.chattingRoom.value!!.chattingRoomMessages[position].messageContent
+                    holder.textViewDate.text = chattingViewModel.chattingRoom.value!!.chattingRoomMessages[position].messageDate
                     Glide
                         .with(holder.imageViewProfile)
-                        .load(chattingRoom.chattingRoomUserProfileCounterpart.toUri())
+                        .load(chattingViewModel.chattingRoomUserCounterpart.value!!.userProfile.toUri())
                         .circleCrop()
                         .into(holder.imageViewProfile)
                 }
